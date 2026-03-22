@@ -1,74 +1,45 @@
-# React + TypeScript + Vite
+# Rostrata Idle Wiki
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Player-facing wiki for **Rostrata Idle**, built with [Vite](https://vite.dev/) + React. Pages are plain **Markdown** files.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL Vite prints (usually `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Add a wiki page
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Create `src/content/wiki/<slug>.md`  
+   - Use **lowercase** and **hyphens** (e.g. `woodcutting.md` → `/woodcutting`).
+2. Put a `# Title` at the top.
+3. The **sidebar** picks up every `.md` file automatically.
+
+**Home** is always `index.md` (route `/`).
+
+## Linking
+
+- Same wiki: `[text](/page-slug)` (no `.md` in the URL).
+- External: `[text](https://example.com)` — opens in a new tab.
+
+[GitHub-flavored Markdown](https://github.github.com/gfm/) (tables, task lists, etc.) is enabled via `remark-gfm`.
+
+## Build
+
+```bash
+npm run build
+npm run preview   # optional: test production build
 ```
-# rostrata-idle-wiki
+
+## Project layout
+
+| Path | Purpose |
+|------|---------|
+| `src/content/wiki/*.md` | Wiki page content |
+| `src/wiki/WikiLayout.tsx` | Header + sidebar shell |
+| `src/wiki/WikiPage.tsx` | Renders the current page |
+| `src/wiki/wikiContent.ts` | Loads `.md` via Vite `import.meta.glob` |
+| `src/wiki/wiki.css` | Wiki layout + article typography |
